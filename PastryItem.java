@@ -103,7 +103,11 @@ public class PastryItem extends Item
     @Override
     public String toString()
     {
-        return "-"+super.getName()+"\n\tCost: "+ this.calculateCost() + "\n\tFlavor: " + this.getFlavor();
+    	String heated = "";
+    	if(this.isIsHeated()) {
+    		heated = " (heated)";
+    	}
+        return "\t--" + super.getName() + heated + "\t\t$" + calculateCost() + "\n\t\t" + this.flavor + "\n\n";
     }
 
     /**

@@ -81,8 +81,8 @@ public class CoffeeItem extends DrinkItem
     public String toString()
     {
         
-        return "\t\t~~~~~~~~~~~~~~~~~~~~~~Current Order~~~~~~~~~~~~~~~~~~~~~~~~~\n"+"The coffee drink:\n\tFlavor: " + super.getFlavor() + " " + super.getName() +" "+ super.getSize() 
-                +" "+ getTemperature() + "\nSweetness: " + Integer.parseInt(getSweetness());
+        return "\t-- " + super.getFlavor() + " Coffee (" + super.getSize() + "):\t\t$" + calculateCost() + "\n\t\tSweetness: " + super.getSweetness() +
+        		"\n\t\tMilk: " + super.getMilk() + "\n\t\tTemp: " + this.temperature + "\n\t\tSpecial instuctions: " + this.specialInstructions + "\n\n";
     }
     
     /**
@@ -92,65 +92,64 @@ public class CoffeeItem extends DrinkItem
     @Override
     public double calculateCost()
     {
-        double coffCost;
-        //while((!super.getMilk().isEmpty()))
-        if(this.getTemperature().equalsIgnoreCase("Blended") && this.getSize().equalsIgnoreCase("Small") && 
-                (this.getMilk().equalsIgnoreCase("whole milk") || this.getMilk().equalsIgnoreCase("half-and-half")))
+        double coffeeCost;
+        if(this.getTemperature().equalsIgnoreCase("Blended") && this.getSize().equalsIgnoreCase("S") && 
+                (this.getMilk().equalsIgnoreCase("whole milk") || this.getMilk().equalsIgnoreCase("half and half")))
         {
-            coffCost = 1.25 + 0.25;
-            return coffCost;
+            coffeeCost = 1.25 + 0.25;
+            return coffeeCost;
         }
-        else if(this.getTemperature().equalsIgnoreCase("Blended") && this.getSize().equalsIgnoreCase("Medium") && 
-                (this.getMilk().equalsIgnoreCase("whole milk") || this.getMilk().equalsIgnoreCase("half-and-half")))
+        else if(this.getTemperature().equalsIgnoreCase("Blended") && this.getSize().equalsIgnoreCase("M") && 
+                (this.getMilk().equalsIgnoreCase("whole milk") || this.getMilk().equalsIgnoreCase("half and half")))
         {
-            coffCost = 1.75 + 0.25;
-            return coffCost;
+            coffeeCost = 1.75 + 0.25;
+            return coffeeCost;
         }
-        else if(this.getTemperature().equalsIgnoreCase("Blended") && this.getSize().equalsIgnoreCase("Large") && 
-                (this.getMilk().equalsIgnoreCase("whole milk") || this.getMilk().equalsIgnoreCase("half-and-half")))
+        else if(this.getTemperature().equalsIgnoreCase("Blended") && this.getSize().equalsIgnoreCase("L") && 
+                (this.getMilk().equalsIgnoreCase("whole milk") || this.getMilk().equalsIgnoreCase("half and half")))
         {
-            coffCost = 2.25 + 0.25;
-            return coffCost;
+            coffeeCost = 2.25 + 0.25;
+            return coffeeCost;
         }
         
         else if((this.getTemperature().equalsIgnoreCase("Hot") || this.getTemperature().equalsIgnoreCase("Iced")) 
-                && this.getSize().equalsIgnoreCase("Small") && 
-                (this.getMilk().equalsIgnoreCase("whole milk") || this.getMilk().equalsIgnoreCase("half-and-half")))
+                && this.getSize().equalsIgnoreCase("S") && 
+                (this.getMilk().equalsIgnoreCase("whole milk") || this.getMilk().equalsIgnoreCase("half and half")))
         {
-            coffCost = 1.00 + 0.25;
-            return coffCost;
+            coffeeCost = 1.00 + 0.25;
+            return coffeeCost;
         }
         else if((this.getTemperature().equalsIgnoreCase("Hot") || this.getTemperature().equalsIgnoreCase("Iced")) 
-                && this.getSize().equalsIgnoreCase("Medium") &&  
+                && this.getSize().equalsIgnoreCase("M") &&  
                 (this.getMilk().equalsIgnoreCase("whole milk") || 
-                this.getMilk().equalsIgnoreCase("half-and-half")))
+                this.getMilk().equalsIgnoreCase("half and half")))
         {
-            coffCost = 1.50 + 0.25;
-            return coffCost;
+            coffeeCost = 1.50 + 0.25;
+            return coffeeCost;
         }
         else if((this.getTemperature().equalsIgnoreCase("Hot") || this.getTemperature().equalsIgnoreCase("Iced")) 
-                && this.getSize().equalsIgnoreCase("Large") &&  
-                (this.getMilk().equalsIgnoreCase("whole milk") || this.getMilk().equalsIgnoreCase("half-and-half")))
+                && this.getSize().equalsIgnoreCase("L") &&  
+                (this.getMilk().equalsIgnoreCase("whole milk") || this.getMilk().equalsIgnoreCase("half and half")))
         {
-            coffCost = 2.00 + 0.25;
-            return coffCost;
+            coffeeCost = 2.00 + 0.25;
+            return coffeeCost;
         }
         else if((this.getTemperature().equalsIgnoreCase("Hot") || this.getTemperature().equalsIgnoreCase("Iced")) 
-                && this.getSize().equalsIgnoreCase("Small"))
+                && this.getSize().equalsIgnoreCase("S"))
         {
-            coffCost = 1.00;
-            return coffCost;
+            coffeeCost = 1.00;
+            return coffeeCost;
         }
         else if((this.getTemperature().equalsIgnoreCase("Hot") || this.getTemperature().equalsIgnoreCase("Iced")) 
                 && this.getSize().equalsIgnoreCase("Medium"))
         {
-            coffCost = 1.50;
-            return coffCost;
+            coffeeCost = 1.50;
+            return coffeeCost;
         }
         else
         {
-          coffCost = 2.00;
-          return coffCost;
+          coffeeCost = 2.00;
+          return coffeeCost;
         }
     }
 }

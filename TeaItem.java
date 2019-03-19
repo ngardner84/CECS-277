@@ -34,11 +34,11 @@ public class TeaItem extends DrinkItem
      * @param teaFlav
      * @param teaMilk 
      */
-    public TeaItem(String teaSize, String teaSwtns, String teaFlav, String teaMilk)
+    public TeaItem(String teaSize, String teaSweetness, String teaFlavor, String teaMilk)
     {
         this.size = teaSize;
-        this.sweetness = teaSwtns;
-        this.flavor = teaFlav;
+        this.sweetness = teaSweetness;
+        this.flavor = teaFlavor;
         this.milk = teaMilk;
         toppings = new ArrayList<>();
     }
@@ -143,20 +143,12 @@ public class TeaItem extends DrinkItem
     @Override
     public String toString()
     {
-        return "-Tea" + "\n\tSize: " + super.getSize()
-                + "\n\tSweetness: " + super.getSweetness()
-                + "\n\tFlavor: " + super.getFlavor()
-                + "\n\tMilk(Optional): " + super.getMilk()
-                + "\n\tToppings: " + toppings;
-    }
-    
-    /**
-     * 
-     * @param poly 
-     */
-    public static void main(String[] poly)
-    {
-        
+    	String totalToppings = "";
+    	for(int i = 0;i < toppings.size();i++) {
+    		totalToppings += toppings.get(i) + " | ";
+    	}
+        return "\t-- " + super.getFlavor() + "(" + super.getSize() + "):\t\t$" + calculateCost() + "\n\t\tSweetness: " + super.getSweetness() + "\n\t\tMilk: " + 
+        super.getMilk() + "\n\t\tToppings: " + totalToppings + "\n\n";
     }
     
     

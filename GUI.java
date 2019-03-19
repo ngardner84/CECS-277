@@ -15,27 +15,24 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import project3.FinalizeOrderFrame.ExitButtonListener;
-import project3.FinalizeOrderFrame.PayButtonListener;
-
 
 public class GUI {
 
 	public static CashRegister cash = new CashRegister();
+	public static boolean hasItem = false;
 	
-	public static class NewOrderFrame extends JFrame {
-        private JLabel itemToPurchaseLabel;
+	public static class MainMenu extends JFrame {
+        private JLabel purchaseLabel;
         private JButton coffeeButton;
         private JButton teaButton;
         private JButton pastryButton, doneButton;
         protected JPanel panel = new JPanel();
     
-	public NewOrderFrame()
+	public MainMenu()
         {
             createComponents();
             this.setTitle("New Order");
-            this.setSize(800, 400);
-		    //this hides the frame on close without terminating the program
+            this.setSize(800, 500); 
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
 	
@@ -43,10 +40,23 @@ public class GUI {
         private void createComponents()
         {	
 		//Creating components
-		itemToPurchaseLabel = new JLabel("Select an item to purchase: "); //text
-		coffeeButton = new JButton("Coffee"); //button
-        teaButton = new JButton("Tea"); //button
-        pastryButton = new JButton("Pastry"); //button
+        JTextArea receiptText = new JTextArea(25,50);
+        JScrollPane receiptPane = new JScrollPane(receiptText);
+        if(GUI.cash.drinkItems.size() > 0 || GUI.cash.pastryItems.size() > 0) {
+        	hasItem = true;
+        	receiptText.append("\n\t~~~~~~~~~~~~~~~~~~~~~~~~Current Order~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        	for(int i = 0;i < GUI.cash.drinkItems.size();i++) {
+        		receiptText.append(GUI.cash.drinkItems.get(i).toString());
+        	}
+        	for(int j = 0;j < GUI.cash.pastryItems.size();j++) {
+        		receiptText.append(GUI.cash.pastryItems.get(j).toString());
+        	}
+        }
+        	
+        purchaseLabel = new JLabel("Select an item to purchase: "); 
+		coffeeButton = new JButton("Coffee"); 
+        teaButton = new JButton("Tea"); 
+        pastryButton = new JButton("Pastry"); 
         doneButton = new JButton("Done");
 		
                 
@@ -64,10 +74,14 @@ public class GUI {
         doneButton.addActionListener(doneListener);
                 
 		//Adding the components to the panel
-        panel.add(itemToPurchaseLabel);
+        panel.add(purchaseLabel);
 		panel.add(coffeeButton);
         panel.add(teaButton);
         panel.add(pastryButton);
+        if(hasItem == true) {
+        	panel.add(receiptPane);
+        }
+        
 		//Add panel to frame
 		this.add(panel);
 	    }
@@ -129,7 +143,6 @@ public class GUI {
 
 	public static class NewCoffeeOrderFrame extends JFrame
 	{
-		private JLabel label;
 		private JLabel instructions;
 		private JComboBox<String> sizeOptions;
 		private JComboBox<String> sugarTsp;
@@ -154,7 +167,7 @@ public class GUI {
 		
 		private void createComponents() {
 			//instantiate the components
-			instructions = new JLabel("Specify your coffee order: ");
+			instructions = new JLabel("How would you like your coffee?: ");
 			
 			String[] sizes = {"S", "M", "L"};
 			sizeOptions = new JComboBox<String>(sizes);
@@ -162,13 +175,13 @@ public class GUI {
 			String[] tsp = {"1", "2","3","4","5","6","7","8","9","10"};
 			sugarTsp = new JComboBox<String>(tsp);
 			
-			String[] bases = {"whole milk", "hald-and-half", "No milk"};
+			String[] bases = {"Whole Milk", "Half and Half", "No Milk"};
 			baseOptions = new JComboBox<String>(bases);
 	                
-	        String[] flavors = {"regular", "mocha", "hazelnut", "vanilla"};
+	        String[] flavors = {"Regular", "Mocha", "Hazelnut", "Vanilla"};
 	        flavorOptions = new JComboBox<String>(flavors);
 	                
-	        String[] temperature = {"hot", "iced", "blended"};
+	        String[] temperature = {"Hot", "Iced", "Blended"};
 	        temperatureOptions = new JComboBox<String>(temperature);
 	                
 	        specialInstructions = new JTextField(50);
@@ -192,17 +205,17 @@ public class GUI {
 			//Create the panel and add components
 			JPanel panel = new JPanel();
 			panel.add(instructions);
-	        panel.add(new JLabel("flavor: "));
+	        panel.add(new JLabel("Flavor: "));
 	        panel.add(flavorOptions);
-			panel.add( new JLabel("size: "));
+			panel.add( new JLabel("Size: "));
 			panel.add(sizeOptions);
-			panel.add(new JLabel("sugar: "));
+			panel.add(new JLabel("Sugar: "));
 			panel.add(sugarTsp);
-			panel.add(new JLabel("milk: "));
+			panel.add(new JLabel("Milk: "));
 			panel.add(baseOptions);
-	        panel.add(new JLabel("type: "));
+	        panel.add(new JLabel("Type: "));
 	        panel.add(temperatureOptions);
-	        panel.add(new JLabel("special instructions: "));
+	        panel.add(new JLabel("Special instructions: "));
 	        panel.add(specialInstructions);
 	 		panel.add(save);
 	        panel.add(cancel);
@@ -220,16 +233,13 @@ public class GUI {
 	                    String c = click.getActionCommand();
 	                    if(c.equals("Save Order"))
 	                    {
-	                       DrinkItem coffeeDrink = new CoffeeItem(sizeOptions.getName(),sugarTsp.getName(),
-	                               flavorOptions.getName(),baseOptions.getName(),temperatureOptions.getName(),
-	                               specialInstructions.getName());
-	                       			coffeeDrink.toString();
+	                       DrinkItem coffeeDrink = new CoffeeItem(sizeOptions.getSelectedItem().toString(),sugarTsp.getSelectedItem().toString(),
+	                               flavorOptions.getSelectedItem().toString(),baseOptions.getSelectedItem().toString(),temperatureOptions.getSelectedItem().toString(),
+	                               specialInstructions.getText());
+	                      GUI.cash.addDrink(coffeeDrink);
 	                    
-	                    
-	                  
-	                    
-	                    NewOrderFrame n = new NewOrderFrame();
-	                    n.setVisible(true);
+	                    MainMenu mainMenu = new MainMenu();
+	                    mainMenu.setVisible(true);
 	                    dispose();
 	                    }
 	                        
@@ -247,7 +257,7 @@ public class GUI {
 	                    String c = click.getActionCommand();
 	                    if(c.equals("Cancel"))
 	                    {
-	                       NewOrderFrame n = new NewOrderFrame();
+	                       MainMenu n = new MainMenu();
 	                       n.setVisible(true);
 	                       n.panel.add(new JButton("Done"));
 	                       n.panel.revalidate();
@@ -315,9 +325,6 @@ public class GUI {
         ActionListener pastryOptionListener = new NewPastryOrderFrame.pastryOptionListener();
         pastryTypeOptions.addActionListener(pastryOptionListener);
         
-        //ItemListener heatedCheckBoxListener = new NewPastryOrderFrame.heatedCheckBoxListener();
-        //heatedCheckBox.addItemListener(heatedCheckBoxListener);
-        
         panel.add(pastryTypeOptions);
         panel.add(cancel);
         this.add(panel);
@@ -338,33 +345,33 @@ public class GUI {
                             case "Muffin":
                                 {
                                     String muffinOption = muffinType[pastryTypeOptions.getSelectedIndex()];
-                                    PastryItem m = new PastryItem("Muffin",muffinOption,heatedCheckBox.getState());
-                                    m.calculateCost();
+                                    PastryItem muffin = new PastryItem("Muffin",muffinOption,heatedCheckBox.getState());
+                                    GUI.cash.pastryItems.add(muffin);
                                     break;
                                 }
                             case "Cookie":
                                 {
                                     String cookieOption = cookieType[cookieTypeOptions .getSelectedIndex()];
                                     PastryItem cookie = new PastryItem("Cookie",cookieOption,heatedCheckBox.getState());
-                                    cookie.calculateCost();
+                                    GUI.cash.pastryItems.add(cookie);
                                     break;
                                 }
                             case "Cheesecake Slice":
                                 {
                                     String cheeseCakeOption = cheesecakeSliceType[cheesecakeSliceTypeOptions.getSelectedIndex()];
                                     PastryItem cheeseCake = new PastryItem("Cheesecake Slice",cheeseCakeOption,heatedCheckBox.getState());
-                                    cheeseCake.calculateCost();
+                                    GUI.cash.pastryItems.add(cheeseCake);
                                     break;
                                 }
                             default:
                                 {                                   
                                     String danishOption = danishType[danishTypeOptions.getSelectedIndex()];
                                     PastryItem danish = new PastryItem("Danish",danishOption,heatedCheckBox.getState());
-                                    danish.calculateCost();
+                                    GUI.cash.pastryItems.add(danish);
                                     break;
                                 }
-                        }                        
-                        new NewOrderFrame().setVisible(true);                     
+                        }
+                        new MainMenu().setVisible(true);                     
                         dispose();
                         
                       
@@ -379,7 +386,7 @@ public class GUI {
 		@Override
 		public void actionPerformed(ActionEvent click) 
                 {
-                    new NewOrderFrame().setVisible(true);
+                    new MainMenu().setVisible(true);
                     dispose();
 		}
 		
@@ -395,20 +402,15 @@ public class GUI {
                 switch (pastryTypeOptions.getSelectedIndex()) 
                 {
                     case 0:
-                        //lblText.setText("You have selected a Muffin pastry.");
                         panel.add(muffinTypeOptions);
                         break;
                     case 1:
-                        //lblText.setText("You have selected a Cookie pastry.");
                         panel.add(cookieTypeOptions);
                         break;
                     case 2:
-                        //lblText.setText("You have selected Cheesecake Slice pastry.");
-                     
                         panel.add(cheesecakeSliceTypeOptions);
                         break;
                     case 3:
-                        //lblText.setText("You have selected Danish pastry.");
                         panel.add(danishTypeOptions);
                         break; 
                     default:
@@ -444,13 +446,9 @@ public class GUI {
 	    protected ArrayList<String> toppings;
 		
 		public NewTeaOrderFrame() {
-			//create the components
 			createComponents();
-			
-			//set frame properties
 			this.setTitle("New Tea Order");
 			this.setSize(800, 400);
-			//this hides the frame on close without terminating the program
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		}
 		
@@ -474,18 +472,15 @@ public class GUI {
 			
 			save = new JButton("Save Order");
 	        cancel = new JButton("Cancel");
-			
-			//creating the event listener object
+	        
 			ActionListener saveListener = new SaveButtonListener();
 			
-			//using the listener object to define button reaction
 			save.addActionListener(saveListener);
 	                
 	                
 	        ActionListener cancelListener = new CancelButtonListener();
 	        cancel.addActionListener(cancelListener);
 	                
-	        //6 check boxes for toppings
 	        toppingcheckBox1 = new Checkbox("boba");
 	        toppingcheckBox2 = new Checkbox("popping boba");
 	        toppingcheckBox3 = new Checkbox("grass jelly");
@@ -529,10 +524,27 @@ public class GUI {
 
 	                    if(c.equals("Save Order"))
 	                    {
-	                    label.setText("~~~~~~~~~~~~~~Current Order~~~~~~~~~~~~~~~");
-
-	                    
-	                    new NewOrderFrame().setVisible(true);
+	                    TeaItem newTea = new TeaItem(sizeOptions.getSelectedItem().toString(), sweetnessOptions.getSelectedItem().toString(), flavorOptions.getSelectedItem().toString(), baseOptions.getSelectedItem().toString());
+	                    if(toppingcheckBox1.getState() == true) {
+	                    	newTea.addTopping("boba");
+	                    }
+	                    if(toppingcheckBox2.getState() == true) {
+	                    	newTea.addTopping("popping boba");
+	                    }
+	                    if(toppingcheckBox3.getState() == true) {
+	                    	newTea.addTopping("grass jelly");
+	                    }
+	                    if(toppingcheckBox4.getState() == true) {
+	                    	newTea.addTopping("lychee jelly");
+	                    }
+	                    if(toppingcheckBox5.getState() == true) {
+	                    	newTea.addTopping("coconut jelly");
+	                    }
+	                    if(toppingcheckBox6.getState() == true) {
+	                    	newTea.addTopping("mini mochi");
+	                    }
+	                    GUI.cash.drinkItems.add(newTea);
+	                    new MainMenu().setVisible(true);
 	                    dispose();
 	                    }
 	                    panel.revalidate();
@@ -553,7 +565,7 @@ public class GUI {
 	                    if(c.equals("Cancel"))
 	                    {
 	                       dispose();
-	                       new NewOrderFrame().setVisible(true);
+	                       new MainMenu().setVisible(true);
 	                    }
 	                                 
 			}
@@ -574,7 +586,7 @@ public class GUI {
 	    
 	    public FinalizeOrderFrame()
 	    {
-	        amountDue = cash.getsubTotalBT();
+	        amountDue = cash.totalBeforeTax();
 	        createComponents();
 	        this.setTitle("Finalize Order");
 	    }
@@ -653,8 +665,7 @@ public class GUI {
 	
 	
 	public static void main(String[] args) {
-		NewOrderFrame mainMenu = new NewOrderFrame();
+		MainMenu mainMenu = new MainMenu();
 		mainMenu.setVisible(true);
-		System.out.println("Hello world");
 	}
 }

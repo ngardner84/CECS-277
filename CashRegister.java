@@ -1,254 +1,127 @@
-/*
- * This class models a Cash register for drinks and desserts. 
- */
 package project3;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
-
 /**
- *
- * @author Dimithri_2
- */
-public class CashRegister
-{
-   private double taxRate;
-   private double purchase;
-   private double taxablePurchase;
-   private double payment;
-  
-   private List<String> salesDetails = new ArrayList<>();
-   private ArrayList<CoffeeItem> coffeeDrink = new ArrayList<>();
-   private ArrayList<TeaItem> teaDrink = new ArrayList<>();
-   private ArrayList<PastryItem> desserts = new ArrayList<>();
-   
-   DecimalFormat df = new DecimalFormat("#,###,##0.00");
-   
- 
-    
-    //Constructs a cash register with no money in it. 
-   //However, a tax rate has been set to model California state tax rate.
+ * this class models a register object that handles all of the sales for the
+ * tea shop
+ * @author Nathan Gardner
+ * @since 2019-02-26
+ * 
+ * **/
 
-    /**
-     *
-     */
-   
-    public CashRegister()
-    {
-       
-       taxRate = 0.09; //9%
-       purchase = 0; 
-       payment = 0;
-       taxablePurchase = 0;
-       
-    }
-   
-    /**
-     * This method adds a relevant user requested drink to the cashRegister drinks list
-     * @param drink 
-     */
-    public void addCoffeeDrinkItem(CoffeeItem drink)
-    {
-        this.coffeeDrink.add(drink);
-    }
-    /**
-     * 
-     * @param drink 
-     */
-    public void addTeaDrinkItem(TeaItem drink)
-    {
-        this.teaDrink.add(drink);
-    }
-    /**
-     * This method adds a relevant user requested dessert to the cashRegister dessert list
-     * @param dessert 
-     */
-    public void addDessertItem(PastryItem dessert)
-    {
-        this.desserts.add(dessert);
-    }
-    
-    // This method simply returns drink item
+public class CashRegister {
+	DecimalFormat df = new DecimalFormat("0.00");
+	ArrayList<Double> receiptPrices = new ArrayList<Double>();
+	ArrayList<DrinkItem> drinkItems = new ArrayList<DrinkItem>();
+	ArrayList<PastryItem> pastryItems = new ArrayList<PastryItem>();
+	public double tax;
+	public double total;
+	
+	/**
+	 * constructs a default register with a value for tax
+	 * **/
+	public CashRegister() {
+		tax = .08;
+	}
+	
+	/**
+	 * uses the interface of BobaLounge to return the cost of an item
+	 * @param item - item given to get the cost from
+	 * @return cost of the item as a double
+	 * **/
+	public static double getCost(Item item) {
+		return item.getCost();
+	}
+	
+	/**
+	 * adds a drink to the drinkItems arraylist of the order
+	 * @param newDrink - drink to be added to the list
+	 * **/
+	public void addDrink(DrinkItem newDrink) {
+		this.drinkItems.add(newDrink);
+	}
+	
+	/**
+	 * adds a dessert to the pastryItems arraylist of the order
+	 * @param newDessert - dessert to be added to the list
+	 * **/
+	public void addDessert(PastryItem newPastry) {
+		this.pastryItems.add(newPastry);
+	}
+	
+	
+	/**
+	 * returns the change owed to a customer from their payment
+	 * @param payment - money given by a customer
+	 * @return money owed to customer as a string
+	 * **/
+	public String giveChange(double payment) {
+		return df.format(payment - totalAfterTax());
+	}
+	
+	/**
+	 * gives the total amount of items being purchased at the register
+	 * @return the size of both the drinkItems arraylist and pastryItems
+	 * arraylist as an int
+	 * **/
+	public int totalItems() {
+		return this.drinkItems.size() + this.pastryItems.size();
+	}
+	
+	/**
+	 * gets the total before tax is applied
+	 * @return the total of the purchase before tax as a double
+	 * **/
+	public double totalBeforeTax() {
+		for(DrinkItem drink : drinkItems) {
+			total += drink.getCost();
+		}
+		for(PastryItem dessert : pastryItems) {
+			total += dessert.getCost();
+		}
+		return total;
+	}
+	
+	/**
+	 * gets the total after tax is applied
+	 * @return the total of the purchase as a double
+	 * **/
+	public double totalAfterTax() {
+		return total + (total * tax);
+	}
+	
+	/**
+	 * gives a string of the receipt when a coupon is not used
+	 * @return receipt string of the customer order
+	 * **/
+	public String returnReceipt() {
+		String items = "";
+		for(int i = 0;i < drinkItems.size();i++) {
+			DrinkItem tempDrink = drinkItems.get(i);
+			items += tempDrink.toString() + "\n";
+		}
+		for(int i = 0;i < pastryItems.size();i++) {
+			PastryItem tempDessert = pastryItems.get(i);
+			items += tempDessert.toString() + "\n";
+		}
+		String receipt = "Receipt for order:\n" + items + "Subtotal before tax: $" + df.format(totalBeforeTax()) + 
+				"\nTax: $" + df.format(total * tax) + "\nTotal cost: $" + df.format(totalAfterTax()) + "\n";
+		receiptPrices.add(totalAfterTax());
+		return receipt;
+	}
+	
+	
+	/**
+	 * returns a string representation of the register that reads
+	 * 'Receipt for order:
+	 *  Subtotal before tax: $<totalBeforeTax>
+	 *  Tax: $<tax>
+	 *  Total cost: $<totalAfterTax>'
+	 * **/
+	public String toString() {
+		String receipt = "Receipt for order:\nSubtotal before tax: $" + totalBeforeTax() + 
+				"\nTax: $" + df.format(total * tax) + "\nTotal cost: $" + totalAfterTax();
+		return receipt;
+	}
 
-    /**
-     *
-     * @return
-     */
-    public List<CoffeeItem> getCoffeeDrinks()
-    {
-        return this.coffeeDrink;
-    }
-    
-    public List<TeaItem> getTeaDrinks()
-    {
-        return this.teaDrink;
-    }
-    
-    // This method returns the dessert item
-    /**
-     *
-     * @return
-     */
-    public List<PastryItem> getDesserts()
-    {
-        return this.desserts;
-    }
-
-
-     /**
-      Records the purchase price of an item.
-      @param amount the price of the purchased item
-   */
-   private void recordPurchase(double amount)
-   {
-      purchase = purchase + amount;
-   }
-   
-    /**
-      Records the sale of a taxable item.
-      @param amount the price of the item
-   */
-   private void recordTaxablePurchase(double amount)
-   {
-      taxablePurchase = taxablePurchase + amount;
-   }
-   
-   /**
-      Processes a payment received from the customer.
-      @param amount the amount of the payment - Will include coupons also
-   */
-   public void receivePayment(double amount)
-   {
-      payment = amount;
-   }
-   
-   
-
-   
-    /**
-      Processes the sales tax due.
-      @return the sales tax due
-   */
-    public double getSalesTax() {
-        return taxablePurchase * taxRate;
-    }
-   
-   /**
-    * This method Clears the Cash Register and Resets the machine for the next customer.
-    */
-   public void clear() // reset method
-   {
-      this.getSalesDetails().add(this.toString());
-      purchase = 0;
-      payment = 0;
-      taxablePurchase = 0;
-      this.coffeeDrink.clear();
-      this.teaDrink.clear();
-      this.desserts.clear();
-
-   }
-     /**
-      Computes the change due
-      @return the change due to the customer
-   */
-   
-   public double getChange()
-   {
-      return payment - getTotalAT();
-   }
-   
-   
-   // This method Computes sub total before tax and return sub total before tax
-
-    /**
-     *
-     * @return
-     */
-   public double getsubTotalBT() // Total Before Tax
-   {
-       purchase = 0;
-       
-       for (CoffeeItem cdrink : coffeeDrink) 
-       {
-           this.recordPurchase(cdrink.getCost());
-       }
-       for (TeaItem tdrink : teaDrink) 
-       {
-           this.recordPurchase(tdrink.getCost());
-       }
-       for (PastryItem dessert : desserts) 
-       {
-           this.recordPurchase(dessert.getCost());
-       }
-
-       return purchase;
-   }
-   
-    /**
-      This method Computes the total items purchases and 
-      @return the total items purchased by the customer
-   */
-   
-    public int getTotalItems() {
-        return this.coffeeDrink.size() +  this.teaDrink.size() + this.desserts.size();
-    }
-   
-   /**
-    * This method computes the discount value and if it is a drink coupon it will add the discount or
-    * if it is a a dessert item the method will compute the discount for the dessert item and applies
-    * it to the final cost due
-     * @return 
-    * @returns taxable purchase after tax and after the discount(coupon).
-    */
-    public double getTotalAT() {
-        taxablePurchase = 0;
-
-        for (CoffeeItem coffee : coffeeDrink) {
-            double cost = coffee.getCost();
-            this.recordTaxablePurchase(cost);
-        }
-        
-        for(TeaItem tea : teaDrink)
-        {
-            double cost = tea.getCost();
-            this.recordTaxablePurchase(cost);
-        }
-
-        for (PastryItem dessert : desserts) 
-        {
-            double cost = dessert.getCost();
-            this.recordTaxablePurchase(cost);
-        }
-       
-
-        return taxablePurchase + getSalesTax();
-    }
-     /**
-     * @return the salesDetails
-     */
-    public List<String> getSalesDetails() 
-    {
-        return salesDetails;
-    }
-
-    
-   /**
-     * @return 
-    * @returns a string representation of total items purchased, the sales items and the 
-    * prints the total cost after tax.
-    */
-    
-   @Override
-    public String toString() {
-        String str;
-
-        str = "Here's your receipt:\nTotal Items purchased: "
-                + getTotalItems()
-                + "\nTotal cost after tax: " 
-                + df.format(getTotalAT());
-        return str;
-    }
-
-    
 }
