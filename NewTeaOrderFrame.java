@@ -17,17 +17,17 @@ import javax.swing.SwingUtilities;
 
 public class NewTeaOrderFrame extends JFrame
 {
-        private JLabel label;
+    private JLabel label;
 	private JLabel instructions;
 	private JComboBox<String> sizeOptions;
 	private JComboBox<String> sweetnessOptions;
 	private JComboBox<String> baseOptions;
-        private JComboBox<String> flavorOptions;
+    private JComboBox<String> flavorOptions;
 	private JButton save;
-        private JButton cancel;
-        private Checkbox toppingcheckBox1, toppingcheckBox2, toppingcheckBox3, toppingcheckBox4, toppingcheckBox5, toppingcheckBox6;
-        private JPanel panel; 
-        protected ArrayList<String> toppings;
+    private JButton cancel;
+    private Checkbox toppingcheckBox1, toppingcheckBox2, toppingcheckBox3, toppingcheckBox4, toppingcheckBox5, toppingcheckBox6;
+    private JPanel panel; 
+    protected ArrayList<String> toppings;
 	
 	public NewTeaOrderFrame() {
 		//create the components
@@ -43,7 +43,7 @@ public class NewTeaOrderFrame extends JFrame
 	
 	private void createComponents() {
 		//instantiate the components
-                label = new JLabel("~~~~~~~~~~~~~");
+        label = new JLabel("~~~~~~~~~~~~~");
 		instructions = new JLabel("Specify the tea order: ");
 		
 		String[] sizes = {"S", "M", "L"};
@@ -55,11 +55,11 @@ public class NewTeaOrderFrame extends JFrame
 		String[] bases = {"whole milk", "hald-and-half", "No milk"};
 		baseOptions = new JComboBox<>(bases);
                 
-                String[] flavors = {"Rose Tea", "Green Tea", "Black Tea", "Jasmine Green Tea","Oolong Tea"};
-                flavorOptions = new JComboBox<>(flavors);              
+        String[] flavors = {"Rose Tea", "Green Tea", "Black Tea", "Jasmine Green Tea","Oolong Tea"};
+        flavorOptions = new JComboBox<>(flavors);              
 		
 		save = new JButton("Save Order");
-                cancel = new JButton("Cancel");
+        cancel = new JButton("Cancel");
 		
 		//creating the event listener object
 		ActionListener saveListener = new SaveButtonListener();
@@ -68,35 +68,35 @@ public class NewTeaOrderFrame extends JFrame
 		save.addActionListener(saveListener);
                 
                 
-                ActionListener cancelListener = new CancelButtonListener();
-                cancel.addActionListener(cancelListener);
+        ActionListener cancelListener = new CancelButtonListener();
+        cancel.addActionListener(cancelListener);
                 
-                //6 check boxes for toppings
-                toppingcheckBox1 = new Checkbox("boba");
-                toppingcheckBox2 = new Checkbox("popping boba");
-                toppingcheckBox3 = new Checkbox("grass jelly");
-                toppingcheckBox4 = new Checkbox("lychee jelly");
-                toppingcheckBox5 = new Checkbox("coconut jelly");
-                toppingcheckBox6 = new Checkbox("mini mochi");
+        //6 check boxes for toppings
+        toppingcheckBox1 = new Checkbox("boba");
+        toppingcheckBox2 = new Checkbox("popping boba");
+        toppingcheckBox3 = new Checkbox("grass jelly");
+        toppingcheckBox4 = new Checkbox("lychee jelly");
+        toppingcheckBox5 = new Checkbox("coconut jelly");
+        toppingcheckBox6 = new Checkbox("mini mochi");
            		
 		//Create the panel and add components
-                panel = new JPanel();
+        panel = new JPanel();
 		panel.add(instructions);
-                panel.add(flavorOptions);
+        panel.add(flavorOptions);
 		panel.add(new JLabel("size: "));
 		panel.add(sizeOptions);
 		panel.add(new JLabel("sweetness: "));
 		panel.add(sweetnessOptions);
 		panel.add(new JLabel("milk: "));
 		panel.add(baseOptions); 		
-                panel.add(save);
-                panel.add(cancel);
-                panel.add(toppingcheckBox1);
-                panel.add(toppingcheckBox2);
-                panel.add(toppingcheckBox3);
-                panel.add(toppingcheckBox4);
-                panel.add(toppingcheckBox5);
-                panel.add(toppingcheckBox6);
+        panel.add(save);
+        panel.add(cancel);
+        panel.add(toppingcheckBox1);
+        panel.add(toppingcheckBox2);
+        panel.add(toppingcheckBox3);
+        panel.add(toppingcheckBox4);
+        panel.add(toppingcheckBox5);
+        panel.add(toppingcheckBox6);
 
 
 		

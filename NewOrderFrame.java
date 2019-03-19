@@ -54,10 +54,10 @@ public class NewOrderFrame extends JFrame {
                 doneButton.addActionListener(doneListener);
                 
 		//Adding the components to the panel
-                panel.add(itemToPurchaseLabel);
+        panel.add(itemToPurchaseLabel);
 		panel.add(coffeeButton);
-                panel.add(teaButton);
-                panel.add(pastryButton);
+        panel.add(teaButton);
+        panel.add(pastryButton);
 		//Add panel to frame
 		this.add(panel);
 	}
@@ -76,8 +76,8 @@ public class NewOrderFrame extends JFrame {
                     dispose();
                 }
                 
-                System.exit(0);// This doesn't work, You have to use WindowsListener
-                                
+                new FinalizeOrderFrame().setVisible(true);
+                dispose();
 
             }
         }

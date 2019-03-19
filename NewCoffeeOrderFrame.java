@@ -20,11 +20,11 @@ public class NewCoffeeOrderFrame extends JFrame
 	private JComboBox<String> sizeOptions;
 	private JComboBox<String> sugarTsp;
 	private JComboBox<String> baseOptions;
-        private JComboBox<String> flavorOptions;
-        private JComboBox<String> temperatureOptions;
-        private JTextField specialInstructions;
+    private JComboBox<String> flavorOptions;
+    private JComboBox<String> temperatureOptions;
+    private JTextField specialInstructions;
 	private JButton save;
-        private JButton cancel;
+    private JButton cancel;
 	
 	public NewCoffeeOrderFrame() {
 		//create the components
@@ -51,17 +51,17 @@ public class NewCoffeeOrderFrame extends JFrame
 		String[] bases = {"whole milk", "hald-and-half", "No milk"};
 		baseOptions = new JComboBox<String>(bases);
                 
-                String[] flavors = {"regular", "mocha", "hazelnut", "vanilla"};
-                flavorOptions = new JComboBox<String>(flavors);
+        String[] flavors = {"regular", "mocha", "hazelnut", "vanilla"};
+        flavorOptions = new JComboBox<String>(flavors);
                 
-                String[] temperature = {"hot", "iced", "blended"};
-                temperatureOptions = new JComboBox<String>(temperature);
+        String[] temperature = {"hot", "iced", "blended"};
+        temperatureOptions = new JComboBox<String>(temperature);
                 
-                specialInstructions = new JTextField(50);
+        specialInstructions = new JTextField(50);
                 
 		
 		save = new JButton("Save Order");
-                cancel = new JButton("Cancel");
+        cancel = new JButton("Cancel");
 		
 		//creating the event listener object
 		ActionListener saveListener = new SaveButtonListener();
@@ -70,28 +70,28 @@ public class NewCoffeeOrderFrame extends JFrame
 		save.addActionListener(saveListener);
                 
                 
-                ActionListener cancelListener = new CancelButtonListener();
-                cancel.addActionListener(cancelListener);
+        ActionListener cancelListener = new CancelButtonListener();
+        cancel.addActionListener(cancelListener);
                 
                 
 		
 		//Create the panel and add components
 		JPanel panel = new JPanel();
 		panel.add(instructions);
-                panel.add(new JLabel("flavor: "));
-                panel.add(flavorOptions);
+        panel.add(new JLabel("flavor: "));
+        panel.add(flavorOptions);
 		panel.add( new JLabel("size: "));
 		panel.add(sizeOptions);
 		panel.add(new JLabel("sugar: "));
 		panel.add(sugarTsp);
 		panel.add(new JLabel("milk: "));
 		panel.add(baseOptions);
-                panel.add(new JLabel("type: "));
-                panel.add(temperatureOptions);
-                panel.add(new JLabel("special instructions: "));
-                panel.add(specialInstructions);
+        panel.add(new JLabel("type: "));
+        panel.add(temperatureOptions);
+        panel.add(new JLabel("special instructions: "));
+        panel.add(specialInstructions);
  		panel.add(save);
-                panel.add(cancel);
+        panel.add(cancel);
 		
 		//Add panel to frame
 		this.add(panel);

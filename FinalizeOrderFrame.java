@@ -14,7 +14,6 @@ import javax.swing.JTextField;
 
 public class FinalizeOrderFrame extends JFrame {
     
-    private CashRegister cashRegister = new CashRegister();
     private JLabel label, paymentLabel;
     private JTextField textfield;
     private JTextArea textArea;
@@ -25,7 +24,7 @@ public class FinalizeOrderFrame extends JFrame {
     
     public FinalizeOrderFrame()
     {
-        amountDue = 100.00;
+        amountDue = GUI.cash.getsubTotalBT();
         createComponents();
         this.setTitle("Finalize Order");
     }
