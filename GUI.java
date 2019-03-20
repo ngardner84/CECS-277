@@ -59,8 +59,6 @@ public class GUI {
         pastryButton = new JButton("Pastry"); 
         doneButton = new JButton("Done");
 		
-                
-                //creating the event listener object
 		ActionListener coffeeListener = new coffeeButtonListener();
 		coffeeButton.addActionListener(coffeeListener);
                 
@@ -80,6 +78,7 @@ public class GUI {
         panel.add(pastryButton);
         if(hasItem == true) {
         	panel.add(receiptPane);
+        	panel.add(doneButton);
         }
         
 		//Add panel to frame
@@ -92,17 +91,17 @@ public class GUI {
             @Override
             public void actionPerformed(ActionEvent click)
             {
-                while(click.getSource() != "Done")
+                if(click.getSource() == doneButton)
                 {
+                	if(GUI.cash.drinkItems.size() == 0 && GUI.cash.pastryItems.size() == 0) {
+                		System.exit(0);
+                	}
                     boolean enable = click.getSource().equals(click);
                     doneButton.setEnabled(enable);
                     new FinalizeOrderFrame().setVisible(true);
-                    
+                    dispose();
                 }
-                
-                System.exit(0);
                                 
-
             }
         }
         
@@ -304,8 +303,8 @@ public class GUI {
 		
         //set frame properties
         this.setTitle("Pastry Order");
-	this.setSize(800, 400);
-	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(800, 400);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
     
@@ -441,7 +440,7 @@ public class GUI {
 	    private JComboBox<String> flavorOptions;
 		private JButton save;
 	    private JButton cancel;
-	    private Checkbox toppingcheckBox1, toppingcheckBox2, toppingcheckBox3, toppingcheckBox4, toppingcheckBox5, toppingcheckBox6;
+	    private Checkbox topping1, topping2, topping3, topping4, topping5, topping6;
 	    private JPanel panel; 
 	    protected ArrayList<String> toppings;
 		
@@ -481,12 +480,12 @@ public class GUI {
 	        ActionListener cancelListener = new CancelButtonListener();
 	        cancel.addActionListener(cancelListener);
 	                
-	        toppingcheckBox1 = new Checkbox("boba");
-	        toppingcheckBox2 = new Checkbox("popping boba");
-	        toppingcheckBox3 = new Checkbox("grass jelly");
-	        toppingcheckBox4 = new Checkbox("lychee jelly");
-	        toppingcheckBox5 = new Checkbox("coconut jelly");
-	        toppingcheckBox6 = new Checkbox("mini mochi");
+	        topping1 = new Checkbox("boba");
+	        topping2 = new Checkbox("popping boba");
+	        topping3 = new Checkbox("grass jelly");
+	        topping4 = new Checkbox("lychee jelly");
+	        topping5 = new Checkbox("coconut jelly");
+	        topping6 = new Checkbox("mini mochi");
 	           		
 			//Create the panel and add components
 	        panel = new JPanel();
@@ -500,12 +499,12 @@ public class GUI {
 			panel.add(baseOptions); 		
 	        panel.add(save);
 	        panel.add(cancel);
-	        panel.add(toppingcheckBox1);
-	        panel.add(toppingcheckBox2);
-	        panel.add(toppingcheckBox3);
-	        panel.add(toppingcheckBox4);
-	        panel.add(toppingcheckBox5);
-	        panel.add(toppingcheckBox6);
+	        panel.add(topping1);
+	        panel.add(topping2);
+	        panel.add(topping3);
+	        panel.add(topping4);
+	        panel.add(topping5);
+	        panel.add(topping6);
 
 
 			
@@ -525,22 +524,22 @@ public class GUI {
 	                    if(c.equals("Save Order"))
 	                    {
 	                    TeaItem newTea = new TeaItem(sizeOptions.getSelectedItem().toString(), sweetnessOptions.getSelectedItem().toString(), flavorOptions.getSelectedItem().toString(), baseOptions.getSelectedItem().toString());
-	                    if(toppingcheckBox1.getState() == true) {
+	                    if(topping1.getState() == true) {
 	                    	newTea.addTopping("boba");
 	                    }
-	                    if(toppingcheckBox2.getState() == true) {
+	                    if(topping2.getState() == true) {
 	                    	newTea.addTopping("popping boba");
 	                    }
-	                    if(toppingcheckBox3.getState() == true) {
+	                    if(topping3.getState() == true) {
 	                    	newTea.addTopping("grass jelly");
 	                    }
-	                    if(toppingcheckBox4.getState() == true) {
+	                    if(topping4.getState() == true) {
 	                    	newTea.addTopping("lychee jelly");
 	                    }
-	                    if(toppingcheckBox5.getState() == true) {
+	                    if(topping5.getState() == true) {
 	                    	newTea.addTopping("coconut jelly");
 	                    }
-	                    if(toppingcheckBox6.getState() == true) {
+	                    if(topping6.getState() == true) {
 	                    	newTea.addTopping("mini mochi");
 	                    }
 	                    GUI.cash.drinkItems.add(newTea);
@@ -579,7 +578,7 @@ public class GUI {
 	    private JLabel label, paymentLabel;
 	    private JTextField textfield;
 	    private JTextArea textArea;
-	    private JButton payButton, buttonToBeEnabled;
+	    private JButton payButton, exitButton;
 	    private JPanel panel1;    
 	    
 	    private double amountDue;
@@ -589,26 +588,34 @@ public class GUI {
 	        amountDue = cash.totalBeforeTax();
 	        createComponents();
 	        this.setTitle("Finalize Order");
+	        this.setSize(800,500);
 	    }
 	    
 	    private void createComponents()
 	    {
 	        label = new JLabel("Amount Due: $" + amountDue);
-	        textArea = new JTextArea(30, 7); 
-	        JScrollPane scrollPane = new JScrollPane(textArea);
+	        JTextArea receiptText = new JTextArea(25,50);
+	        JScrollPane receiptPane = new JScrollPane(receiptText);
+	        receiptText.append("\n\t~~~~~~~~~~~~~~~~~~~~~~~~Current Order~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+	        for(int i = 0;i < GUI.cash.drinkItems.size();i++) {
+	        	receiptText.append(GUI.cash.drinkItems.get(i).toString());
+	        }
+	        for(int j = 0;j < GUI.cash.pastryItems.size();j++) {
+	        	receiptText.append(GUI.cash.pastryItems.get(j).toString());
+	        }
 	        textfield = new JTextField(10);  
 	        paymentLabel = new JLabel("Payment: $");
 	        payButton = new JButton("Pay");
 	        ActionListener payB = new PayButtonListener();
 	        payButton.addActionListener(payB);
-	        buttonToBeEnabled = new JButton("Exit");
+	        exitButton = new JButton("Exit");
 	        ActionListener Exit = new ExitButtonListener();
-	        buttonToBeEnabled.addActionListener(Exit);
+	        exitButton.addActionListener(Exit);
 	        
 	        
 	        panel1 = new JPanel();
 	        panel1.add(label);
-	        panel1.add(scrollPane,BorderLayout.CENTER);
+	        panel1.add(receiptPane,BorderLayout.CENTER);
 	        panel1.add(paymentLabel);       
 	        panel1.add(textfield);  
 	        panel1.add(payButton);
@@ -632,7 +639,7 @@ public class GUI {
 	                else if(payment > amountDue)
 	                {
 	                     label.setText("Thank you!");
-	                     panel1.add(buttonToBeEnabled);
+	                     panel1.add(exitButton);
 	                     panel1.remove(payButton);
 	                     panel1.remove(textfield);
 	                     panel1.remove(paymentLabel);
@@ -655,7 +662,11 @@ public class GUI {
 	        @Override
 	        public void actionPerformed(ActionEvent e) {
 	        boolean enable = e.getSource().equals(e);
-	        buttonToBeEnabled.setEnabled(enable);
+	        exitButton.setEnabled(enable);
+	        if(e.getSource() == exitButton) {
+	        	dispose();
+	        	System.exit(0);
+	        }
 	        }
 	    }
 	    
