@@ -5,6 +5,7 @@
  */
 package project3;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -14,6 +15,7 @@ public class TeaItem extends DrinkItem
 {
     protected ArrayList<String> toppings;
     final static double TOPPING_PRICE = 0.25;
+    public static DecimalFormat df = new DecimalFormat("0.00");
     
     /**
      * Default constructor
@@ -147,7 +149,7 @@ public class TeaItem extends DrinkItem
     	for(int i = 0;i < toppings.size();i++) {
     		totalToppings += toppings.get(i) + " | ";
     	}
-        return "\t-- " + super.getFlavor() + "(" + super.getSize() + "):\t\t$" + calculateCost() + "\n\t\tSweetness: " + super.getSweetness() + "\n\t\tMilk: " + 
+        return "\t-- " + super.getFlavor() + "(" + super.getSize() + "):\t\t$" + df.format(calculateCost()) + "\n\t\tSweetness: " + super.getSweetness() + "\n\t\tMilk: " + 
         super.getMilk() + "\n\t\tToppings: " + totalToppings + "\n\n";
     }
     

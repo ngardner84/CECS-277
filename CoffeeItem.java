@@ -5,12 +5,14 @@
  */
 package project3;
 
+import java.text.DecimalFormat;
 
 public class CoffeeItem extends DrinkItem 
 {
     
     protected String temperature;
     protected String specialInstructions;
+    public static DecimalFormat df = new DecimalFormat("0.00");
     
     /**
      * The default constructor creates a Hot small coffee 
@@ -81,7 +83,7 @@ public class CoffeeItem extends DrinkItem
     public String toString()
     {
         
-        return "\t-- " + super.getFlavor() + " Coffee (" + super.getSize() + "):\t\t$" + calculateCost() + "\n\t\tSweetness: " + super.getSweetness() +
+        return "\t-- " + super.getFlavor() + " Coffee (" + super.getSize() + "):\t\t$" + df.format(calculateCost()) + "\n\t\tSweetness: " + super.getSweetness() +
         		"\n\t\tMilk: " + super.getMilk() + "\n\t\tTemp: " + this.temperature + "\n\t\tSpecial instuctions: " + this.specialInstructions + "\n\n";
     }
     

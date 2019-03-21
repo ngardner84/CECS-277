@@ -16,6 +16,8 @@ public class CashRegister {
 	ArrayList<PastryItem> pastryItems = new ArrayList<PastryItem>();
 	public double tax;
 	public double total;
+	public double totalWithTax;
+	public double payment;
 	
 	/**
 	 * constructs a default register with a value for tax
@@ -56,7 +58,7 @@ public class CashRegister {
 	 * @return money owed to customer as a string
 	 * **/
 	public String giveChange(double payment) {
-		return df.format(payment - totalAfterTax());
+		return df.format(payment - totalWithTax);
 	}
 	
 	/**
@@ -73,15 +75,25 @@ public class CashRegister {
 	 * @return the total of the purchase before tax as a double
 	 * **/
 	public double totalBeforeTax() {
-		for(DrinkItem drink : drinkItems) {
-			total += drink.getCost();
-		}
-		for(PastryItem dessert : pastryItems) {
-			total += dessert.getCost();
-		}
 		return total;
 	}
 	
+	/**
+	 * sets the total according to the items in the register
+	 */
+	public void setTotal() {
+		total = 0.0;
+		for(DrinkItem drink : drinkItems) {
+			total += drink.calculateCost();
+		}
+		for(PastryItem pastry : pastryItems) {
+			total += pastry.calculateCost();
+		}
+	}
+	
+	public void updateTotal(double newTotal) {
+		total = newTotal;
+	}
 	/**
 	 * gets the total after tax is applied
 	 * @return the total of the purchase as a double

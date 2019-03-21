@@ -5,23 +5,26 @@
  */
 package project3;
 
+import java.text.DecimalFormat;
+
 public class PastryItem extends Item
 {
     protected String flavor;
-    protected boolean isHeated;
+    protected boolean pastryHeated;
     final static double HEAT_PRICE = 0.25;
+    public static DecimalFormat df = new DecimalFormat("0.00");
     
     /**
      * 
      * @param name
      * @param flavor
-     * @param isHeated 
+     * @param pastryHeated 
      */
-    PastryItem(String name, String flavor, boolean isHeated)
+    PastryItem(String name, String flavor, boolean heated)
     {
         super.setName(name);
         this.flavor = flavor;
-        this.isHeated = true;
+        this.pastryHeated = heated;
     }
     
     /**
@@ -34,7 +37,7 @@ public class PastryItem extends Item
         double pastryCost;
         if(super.getName().equalsIgnoreCase("Muffin") && (!this.getFlavor().isEmpty()))
         {
-            if(this.isIsHeated())
+            if(this.isHeated())
             {
                 pastryCost = 2.00 + HEAT_PRICE;
                 return pastryCost;
@@ -44,7 +47,7 @@ public class PastryItem extends Item
         }
         else if(super.getName().equalsIgnoreCase("Cookie") && (!this.getFlavor().isEmpty()))
         {
-            if(this.isIsHeated())
+            if(this.isHeated())
             {
             pastryCost = 1.50 + HEAT_PRICE;
             return pastryCost;
@@ -55,7 +58,7 @@ public class PastryItem extends Item
         }
         else if(super.getName().equalsIgnoreCase("Danish") && (!this.getFlavor().isEmpty()))
         {
-            if(this.isIsHeated())
+            if(this.isHeated())
             {
             pastryCost = 2.50 + HEAT_PRICE;
             return pastryCost;
@@ -65,7 +68,7 @@ public class PastryItem extends Item
         }
         else if(super.getName().equalsIgnoreCase("Cheesecake Slice") && this.getFlavor().equalsIgnoreCase("Regular"))
         {
-            if(this.isIsHeated())
+            if(this.isHeated())
             {
             pastryCost = 4.00 + HEAT_PRICE;
             return pastryCost;
@@ -75,7 +78,7 @@ public class PastryItem extends Item
         }
         else if(super.getName().equalsIgnoreCase("Cheesecake Slice") && this.getFlavor().equalsIgnoreCase("Cherry"))
         {
-            if(this.isIsHeated())
+            if(this.isHeated())
             {
             pastryCost = 4.50 + HEAT_PRICE;
             return pastryCost;
@@ -85,7 +88,7 @@ public class PastryItem extends Item
         }
         else
         {
-            if(this.isIsHeated())
+            if(this.isHeated())
             {
                 pastryCost = 4.50 + HEAT_PRICE;
                 return pastryCost;
@@ -104,10 +107,13 @@ public class PastryItem extends Item
     public String toString()
     {
     	String heated = "";
-    	if(this.isIsHeated()) {
+    	if(isHeated()) {
     		heated = " (heated)";
     	}
-        return "\t--" + super.getName() + heated + "\t\t$" + calculateCost() + "\n\t\t" + this.flavor + "\n\n";
+    	else {
+    		heated = "";
+    	}
+        return "\t--" + super.getName() + heated + "\t\t$" + df.format(calculateCost()) + "\n\t\t" + this.flavor + "\n\n";
     }
 
     /**
@@ -127,19 +133,19 @@ public class PastryItem extends Item
     }
 
     /**
-     * @return the isHeated
+     * @return the pastryHeated
      */
-    public boolean isIsHeated() 
+    public boolean isHeated() 
     {
-        return isHeated;
+        return pastryHeated;
     }
 
     /**
-     * @param isHeated the isHeated to set
+     * @param pastryHeated the pastryHeated to set
      */
-    public void setIsHeated(boolean isHeated) 
+    public void setpastryHeated(boolean pastryHeated) 
     {
-        this.isHeated = isHeated;
+        this.pastryHeated = pastryHeated;
     }
     
 }
